@@ -5,7 +5,14 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
+  
+  // 如果是 GitHub Actions 環境，通常需要設定 base path 為倉庫名稱
+  // 您也可以手動將其更改為 '/您的倉庫名稱/'
+  const isGithubActions = env.GITHUB_ACTIONS === 'true';
+  const repoName = env.GITHUB_REPOSITORY ? `/${env.GITHUB_REPOSITORY.split('/')[1]}/` : '/';
+
   return {
+    base:  '/20260427/',
     plugins: [react(), tailwindcss()],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
